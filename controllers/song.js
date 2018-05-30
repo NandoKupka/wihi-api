@@ -11,16 +11,26 @@ class SongController {
     constructor() {
     }
     addSong(req, res) {
-        var regexp = new RegExp(req.body.name, "i");
-        Song.find({ name: regexp}).then(list => {
-            if (list.length < 1) {
-                let bei = new Song({ name: req.body.name, artist: req.body.artist });
-                bei.save(function (err) {
-                    if (err) return handleError(err);
-                    res.send(res.body.name)
-                });
-            }
-        })
+        if (req.body.artist) {
+
+            var regexpName = new RegExp(req.body.name, "i");
+            var regexpArtist = new RegExp(req.body.artist);
+            Song.find({ name: regexpName, artist: regexpArtist}).then(list => {
+                if (list.length < 1) {
+                    let bei = new Song({ name: req.body.name, artist: req.body.artist });
+                    bei.save(function (err) {
+                        if (err) return handleError(err);
+                        res.send("Song added!")
+                    });
+                }
+                else {
+                    res.status(400).send("Song already exists!")
+                }
+            })
+        }
+        else {
+            res.status(400).send("Please select an existing artist or create one!")
+        }
         
     }
     listSongs(req, res) {
