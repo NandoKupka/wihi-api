@@ -41,7 +41,7 @@ class ReferenceController {
     }
     searchReference(req, res) {
         var regexp = new RegExp("^"+ req.body.term, "i");
-        Reference.find({ name: regexp}).then(list => {
+        Reference.find({ name: regexp}).limit(5).then(list => {
             res.send(list);
         })
     }

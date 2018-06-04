@@ -15,9 +15,8 @@ class ArtistController {
         Artist.find({ name: regexp}).then(list => {
             if (list.length < 1) {
                 let bei = new Artist({ name: req.body.name});
-                bei.save(function (err) {
-                    if (err) return handleError(err);
-                    res.send(req.body.name)
+                bei.save(function (ae, err) {
+                    res.send(err)
                 });
             }
             else {
@@ -37,7 +36,13 @@ class ArtistController {
     }
     searchArtist(req, res) {
         var regexp = new RegExp("^"+ req.body.term, "i");
-        Artist.find({ name: regexp}).then(list => {
+        Artist.find({ name: regexp}).sort({name: 1}).limit(5).then(list => {
+            res.send(list);
+        })
+    }
+
+    searchExactArtist(req, res) {
+        Artist.find({ name: req.body.term}).sort({name: 1}).limit(5).then(list => {
             res.send(list);
         })
     }
