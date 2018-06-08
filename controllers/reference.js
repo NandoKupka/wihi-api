@@ -45,5 +45,10 @@ class ReferenceController {
             res.send(list);
         })
     }
+    getReferenceData(req, res) {
+        Reference.findOne({ _id: req.params.id}).then(ref => {
+            res.send(ref);
+        })
+    }
 }
 exports.referenceController = new ReferenceController();

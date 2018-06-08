@@ -13,6 +13,12 @@ class SongReferenceController {
     constructor() {
     }
 
+    getReferencesIdsBySongId(id) {
+        return SongReference.find({song: id}).then(refs => {
+            return refs;
+        })
+    }
+
     addSongReference(req, res) {
         let item = new SongReference({ reference: req.body.reference, song: req.body.song, like: 0, dislike: 0 });
         item.save(function (err) {

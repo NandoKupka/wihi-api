@@ -14,8 +14,10 @@ exports.routes = (app) => {
 
     app.post('/addReference', referenceController.referenceController.addReference);
     app.post('/searchReference', referenceController.referenceController.searchReference);
+    app.get('/getReferenceData/:id', referenceController.referenceController.getReferenceData);
 
     app.post('/addSongReference', songReferenceController.songReferenceController.addSongReference);
+    app.get('/getSongData/:id', songController.songController.getSongData);
 
     
 }

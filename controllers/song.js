@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+ObjectId = require('mongodb').ObjectID;
+
+const songReferenceController = require('./songReference');
+
 var songSchema = mongoose.Schema({
     name: String,
     artist: {
@@ -59,6 +63,21 @@ class SongController {
             res.status(400).send("Please select an existing artist or create one!")
         }
         
+    }
+    getSongData(req, res) {
+        let songData = {}
+        Song.findOne({_id: new ObjectId(req.params.id)}).then(data => {
+            songData = {
+                name: data.name,
+                artist: data.artist,
+            }
+        }).then(() => {
+            songReferenceController.songReferenceController.getReferencesIdsBySongId(req.params.id).then(refs => {
+                songData.references = refs;
+            }).then(() => {
+                res.send(songData)
+            });
+        })
     }
     listSongs(req, res) {
         Song.find().then(list => {
